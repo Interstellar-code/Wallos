@@ -8,8 +8,8 @@ Migration of Wallos application from current PHP structure to Laravel 12 framewo
 ### Directory Mapping
 - Current PHP files → `resources/views/` (Blade templates)
 - API endpoints → `app/Http/Controllers/` + routes
-- Database → `database/migrations/` and seeders
-- Assets → `public/` (maintain same relative paths)
+- Database → `database/migrations/` and seeders - Done
+- Assets → `public/` (maintain same relative paths) - 
 - Libs → Composer dependencies where possible
 
 ### Initial Setup Tasks
