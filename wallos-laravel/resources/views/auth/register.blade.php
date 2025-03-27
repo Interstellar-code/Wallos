@@ -15,37 +15,44 @@
 
             <div class="form-group">
                 <label for="username">{{ __('username') }}:</label>
-                <input id="username" type="text" class="@error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" required autocomplete="username" autofocus>
+                <input id="username" type="text" class="@error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" required autocomplete="username" autofocus oninput="validateField(this)">
                 @error('username')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
+                    <div class="error-message">
+                        <i class="fa-solid fa-circle-exclamation"></i>
+                        <span>{{ $message }}</span>
+                    </div>
                 @enderror
             </div>
 
             <div class="form-group">
                 <label for="email">{{ __('email') }}:</label>
-                <input id="email" type="email" class="@error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
+                <input id="email" type="email" class="@error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" oninput="validateField(this)">
                 @error('email')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
+                    <div class="error-message">
+                        <i class="fa-solid fa-circle-exclamation"></i>
+                        <span>{{ $message }}</span>
+                    </div>
                 @enderror
             </div>
 
             <div class="form-group">
                 <label for="password">{{ __('password') }}:</label>
-                <input id="password" type="password" class="@error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
+                <input id="password" type="password" class="@error('password') is-invalid @enderror" name="password" required autocomplete="new-password" oninput="validateField(this)">
                 @error('password')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
+                    <div class="error-message">
+                        <i class="fa-solid fa-circle-exclamation"></i>
+                        <span>{{ $message }}</span>
+                    </div>
                 @enderror
             </div>
 
             <div class="form-group">
                 <label for="password-confirm">{{ __('confirm_password') }}:</label>
-                <input id="password-confirm" type="password" name="password_confirmation" required autocomplete="new-password">
+                <input id="password-confirm" type="password" name="password_confirmation" required autocomplete="new-password" oninput="validateField(this)">
+                <div id="password-match-error" class="error-message" style="display:none">
+                    <i class="fa-solid fa-circle-exclamation"></i>
+                    <span>Passwords do not match</span>
+                </div>
             </div>
 
             <div class="form-group">
@@ -96,3 +103,55 @@
     </section>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+function validateField(field) {
+    const errorDiv = field.nextElementSibling;
+    if (field.checkValidity()) {
+        field.classList.remove('is-invalid');
+        if (errorDiv && errorDiv.classList.contains('error-message')) {
+            errorDiv.style.display = 'none';
+        }
+    } else {
+        field.classList.add('is-invalid');
+        if (errorDiv && errorDiv.classList.contains('error-message')) {
+            errorDiv.style.display = 'flex';
+        }
+    }
+
+    // Special handling for password matching
+    if (field.id === 'password' || field.id === 'password-confirm') {
+        const password = document.getElementById('password');
+        const confirm = document.getElementById('password-confirm');
+        const matchError = document.getElementById('password-match-error');
+        
+        if (password.value && confirm.value && password.value !== confirm.value) {
+            matchError.style.display = 'flex';
+            confirm.classList.add('is-invalid');
+        } else {
+            matchError.style.display = 'none';
+            confirm.classList.remove('is-invalid');
+        }
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelector('form').addEventListener('submit', function(e) {
+        let isValid = true;
+        const requiredFields = this.querySelectorAll('[required]');
+        
+        requiredFields.forEach(field => {
+            validateField(field);
+            if (!field.checkValidity()) {
+                isValid = false;
+            }
+        });
+
+        if (!isValid) {
+            e.preventDefault();
+        }
+    });
+});
+</script>
+@endpush

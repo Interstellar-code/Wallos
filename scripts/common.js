@@ -92,15 +92,52 @@ document.addEventListener('DOMContentLoaded', function () {
     var dropdown = document.querySelector('.dropdown');
     var dropdownContent = document.querySelector('.dropdown-content');
 
-    if (!dropdown.contains(event.target) && isDropdownOpen) {
+    if (dropdown && !dropdown.contains(event.target) && isDropdownOpen) {
       dropdown.classList.remove('is-open');
       isDropdownOpen = false;
     }
   });
 
-  document.querySelector('.dropdown-content').addEventListener('focus', function () {
-    isDropdownOpen = true;
-  });
+  // Safely handle dropdown event listener with multiple fallbacks
+  function initDropdownListener() {
+    // Try multiple selector variations
+    const dropdown = document.querySelector('.dropdown-content') ||
+                    document.querySelector('.dropdown .content') ||
+                    document.querySelector('[data-dropdown-content]');
+    
+    if (!dropdown) {
+      console.warn('Dropdown element not found - disabling dropdown functionality');
+      return;
+    }
+
+    // Verify element is in DOM
+    if (!document.body.contains(dropdown)) {
+      console.warn('Dropdown element exists but not in DOM');
+      return;
+    }
+
+    // Use event delegation as fallback
+    document.body.addEventListener('focus', function(e) {
+      if (e.target.closest('.dropdown-content, .dropdown .content, [data-dropdown-content]')) {
+        isDropdownOpen = true;
+      }
+    }, true);
+  }
+
+  // Initialize when DOM is fully ready and elements exist
+  function safeInit() {
+    if (document.querySelector('.dropdown-content')) {
+      initDropdownListener();
+    } else {
+      setTimeout(safeInit, 100);
+    }
+  }
+
+  if (document.readyState === 'complete') {
+    safeInit();
+  } else {
+    window.addEventListener('load', safeInit);
+  }
 });
 
 function getCookie(name) {

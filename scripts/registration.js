@@ -57,7 +57,7 @@ function runDatabaseMigration() {
   fetch(url)
     .then(response => {
       if (!response.ok) {
-        throw new Error(translate('network_response_error'));
+        throw new Error('Network response was not ok');
       }
     });
 }
@@ -152,10 +152,10 @@ function restoreDB() {
         fetch('endpoints/db/migrate.php')
           .then(response => response.text())
           .then(() => {
-            window.location.href = 'logout.php';
+            document.getElementById('logout-form').submit();
           })
           .catch(error => {
-            window.location.href = 'logout.php';
+            document.getElementById('logout-form').submit();
           });
       } else {
         showErrorMessage(data.message);
