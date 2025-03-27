@@ -9,13 +9,13 @@ Migration of Wallos application from current PHP structure to Laravel 12 framewo
 - Current PHP files → `resources/views/` (Blade templates)
 - API endpoints → `app/Http/Controllers/` + routes
 - Database → `database/migrations/` and seeders - Done
-- Assets → `public/` (maintain same relative paths) - 
+- Assets → `public/` (maintain same relative paths) - Done
 - Libs → Composer dependencies where possible
 
 ### Initial Setup Tasks
-1. Verify Laravel 12 installation
+1. Verify Laravel 12 installation - Done
 2. Set up environment variables
-3. Configure database connection
+3. Configure database connection - Done
 4. Install required Laravel packages:
    - Authentication (laravel/ui or sanctum)
    - PHPMailer (if used)
