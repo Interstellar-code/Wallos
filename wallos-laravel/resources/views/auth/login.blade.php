@@ -1,53 +1,77 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wallos - Login</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-    </style>
-</head>
-<body class="bg-gray-100 min-h-screen flex items-center justify-center">
-    <div class="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-lg">
-        <div class="text-center">
-            <h1 class="text-3xl font-bold text-indigo-600">Wallos</h1>
-            <p class="mt-2 text-gray-600">Please login to continue</p>
-        </div>
+@extends('layouts.app')
 
-        <form method="POST" action="{{ route('login') }}" class="mt-8 space-y-6">
+@section('content')
+<div class="content">
+    <section class="container">
+        <header>
+            <div class="logo-image" title="Wallos - Subscription Tracker">
+                @include('partials.logo')
+            </div>
+            <p>{{ __('please_login') }}</p>
+        </header>
+
+        <form method="POST" action="{{ route('login') }}">
             @csrf
-            <div class="space-y-4">
-                <div>
-                    <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
-                    <input id="username" name="username" type="text" required 
-                        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
-                </div>
 
-                <div>
-                    <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
-                    <input id="password" name="password" type="password" required 
-                        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
-                </div>
-
-                <div class="flex items-center">
-                    <input id="remember" name="remember" type="checkbox" 
-                        class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
-                    <label for="remember" class="ml-2 block text-sm text-gray-700">Stay logged in</label>
-                </div>
+            <div class="form-group">
+                <label for="username">{{ __('username') }}:</label>
+                <input id="username" type="text" class="@error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" required autocomplete="username" autofocus>
+                @error('username')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
             </div>
 
-            <div>
-                <button type="submit" 
-                    class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                    Login
+            <div class="form-group">
+                <label for="password">{{ __('password') }}:</label>
+                <input id="password" type="password" class="@error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
+                @error('password')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
+
+            @if(!config('app.demo_mode'))
+                <div class="form-group-inline">
+                    <input type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+                    <label for="remember">{{ __('stay_logged_in') }}</label>
+                </div>
+            @endif
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">
+                    {{ __('login') }}
                 </button>
             </div>
+
+            @if(session('error'))
+                <ul class="error-box">
+                    <li><i class="fa-solid fa-triangle-exclamation"></i>{{ session('error') }}</li>
+                </ul>
+            @endif
+
+            @if(session('success'))
+                <ul class="success-box">
+                    <li><i class="fa-solid fa-check"></i>{{ session('success') }}</li>
+                </ul>
+            @endif
+
+            @if(config('mail.enabled'))
+                <div class="login-form-link">
+                    <a href="{{ route('password.request') }}">{{ __('forgot_password') }}</a>
+                </div>
+            @endif
+
+            @if(config('auth.registration_enabled'))
+                <div class="separator">
+                    <a href="{{ route('register') }}" class="secondary-button">
+                        {{ __('register') }}
+                    </button>
+                </div>
+            @endif
         </form>
-    </div>
-</body>
-</html>
+    </section>
+</div>
+@endsection
