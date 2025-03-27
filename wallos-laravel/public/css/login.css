@@ -1,0 +1,78 @@
+/* Main login styles */
+.content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    padding: 30px;
+    width: 100%;
+    max-width: 400px;
+}
+
+.logo-image {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.form-group input[type="submit"],
+.form-group button {
+    background: #3490dc;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+}
+
+.error-box, .success-box {
+    padding: 10px;
+    margin: 15px 0;
+    border-radius: 4px;
+}
+
+.error-box {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.success-box {
+    background: #d4edda;
+    color: #155724;
+}
+
+/* Dark theme styles */
+.dark-theme .container {
+    background: #222;
+    color: #fff;
+}
+
+.dark-theme .form-group input {
+    background: #333;
+    color: #fff;
+    border-color: #444;
+}
