@@ -1,23 +1,20 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+    namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
+    use App\Http\Controllers\Controller;
+    use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
-class LoginController extends Controller
-{
-    use AuthenticatesUsers;
-
-    protected $redirectTo = '/';
-
-    public function __construct()
+    class LoginController extends Controller
     {
-        $this->middleware('guest')->except('logout');
-    }
+        use AuthenticatesUsers;
 
-    public function username()
-    {
-        return 'username';
+        protected $redirectTo = '/';
+
+        // Constructor removed as middleware is handled via routes or bootstrap/app.php
+
+        public function username()
+        {
+            return 'username';
+        }
     }
-}
