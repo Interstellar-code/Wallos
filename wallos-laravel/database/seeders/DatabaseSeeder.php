@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
             HouseholdSeeder::class,
             SettingsSeeder::class,
             NotificationSettingsSeeder::class,
+            PlanSeeder::class,
             EmailNotificationSeeder::class,
             DiscordNotificationSeeder::class,
             GotifyNotificationSeeder::class,

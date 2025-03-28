@@ -9,7 +9,7 @@ class Household extends Model
 {
     use HasFactory;
 
-    protected $table = 'household';
+    protected $table = 'households';
 
     protected $fillable = [
         'user_id',

@@ -112,8 +112,9 @@ return new class extends Migration
                 $table->foreignId('user_id')->constrained();
                 $table->boolean('enabled')->default(false);
                 $table->timestamps();
-                $table->text('url')->default('');
-                $table->text('token')->default('');
+                $table->text('server_url')->default('');
+                $table->text('app_token')->default('');
+                $table->integer('priority')->default(5);
                 $table->boolean('ignore_ssl')->default(false);
             });
         }
@@ -154,9 +155,11 @@ return new class extends Migration
             Schema::create('pushover_notifications', function (Blueprint $table) {
                 $table->foreignId('user_id')->constrained();
                 $table->boolean('enabled')->default(false);
-                $table->string('webhook_url');
-                $table->string('bot_name');
-                $table->string('bot_avatar')->nullable();
+                $table->string('api_token');
+                $table->string('user_key');
+                $table->string('device')->nullable();
+                $table->integer('priority')->default(0);
+                $table->string('sound')->nullable();
                 $table->timestamps();
             });
         }
@@ -372,10 +375,10 @@ return new class extends Migration
                 $table->foreignId('user_id')->constrained();
                 $table->boolean('enabled')->default(false);
                 $table->timestamps();
-                $table->text('host')->default('');
+                $table->text('server_url')->default('');
                 $table->text('topic')->default('');
-                $table->text('headers')->default('');
-                $table->foreignId('user_id')->constrained();
+                $table->integer('priority')->default(5);
+                $table->text('auth_token')->nullable();
             });
         }
     }

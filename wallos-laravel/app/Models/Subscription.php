@@ -26,7 +26,8 @@ class Subscription extends Model
         'inactive',
         'website',
         'logo',
-        'notes'
+        'notes',
+        'plan_id'
     ];
 
     public function user()
@@ -52,5 +53,10 @@ class Subscription extends Model
     public function payer()
     {
         return $this->belongsTo(Household::class, 'payer_user_id');
+    }
+
+    public function plan()
+    {
+        return $this->belongsTo(Plan::class);
     }
 }

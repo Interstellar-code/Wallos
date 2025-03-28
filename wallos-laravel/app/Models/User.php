@@ -20,7 +20,8 @@ class User extends Authenticatable
         'is_admin',
         'email_verified',
         'totp_enabled',
-        'totp_secret'
+        'totp_secret',
+        'household_id'
     ];
 
     protected $hidden = [
@@ -43,9 +44,14 @@ class User extends Authenticatable
         return $this->hasMany(Category::class);
     }
 
+    public function household()
+    {
+        return $this->belongsTo(Household::class);
+    }
+
     public function householdMembers()
     {
-        return $this->hasMany(Household::class);
+        return $this->hasMany(User::class, 'household_id');
     }
 
     public function paymentMethods()
