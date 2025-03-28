@@ -1,4 +1,4 @@
-let i18n = {
+var i18n = {
     // Tableau de bord
     error_reloading_subscription: "Erreur lors du rechargement de l'abonnement :",
     error_fetching_image_results: "Erreur lors de la récupération des résultats d'images :",

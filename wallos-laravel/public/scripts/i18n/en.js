@@ -1,4 +1,4 @@
-let i18n = {
+var i18n = {
   // Dashboard
   error_reloading_subscription: "Error reloading subscription:",
   error_fetching_image_results: "Error fetching image results:",

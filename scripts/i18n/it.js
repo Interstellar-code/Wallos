@@ -1,4 +1,4 @@
-let i18n = {
+var i18n = {
   // Dashboard
   error_reloading_subscription: "Errore nel ricaricare l'abbonamento:",
   error_fetching_image_results: "Errore nel recupero delle immagini:",

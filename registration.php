@@ -331,8 +331,13 @@ if (isset($_POST['username'])) {
     <script type="text/javascript">
         window.update_theme_settings = "<?= $updateThemeSettings ?>";
         window.colorTheme = "<?= $colorTheme ?>";
+        window.translations = <?= json_encode($i18n) ?>;
     </script>
+    <script type="text/javascript" src="scripts/i18n.js?<?= $version ?>"></script>
     <script type="text/javascript" src="scripts/registration.js?<?= $version ?>"></script>
+    <script type="text/javascript">
+        I18n.init(window.translations);
+    </script>
 </head>
 
 <body class="<?= $languages[$lang]['dir'] ?>">

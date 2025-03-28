@@ -1,4 +1,4 @@
-let i18n = {
+var i18n = {
   // Dashboard
   error_reloading_subscription: "Fout bij het herladen van abonnement:",
   error_fetching_image_results: "Fout bij het ophalen van afbeeldingsresultaten:",

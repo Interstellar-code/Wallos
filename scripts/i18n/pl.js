@@ -1,4 +1,4 @@
-let i18n = {
+var i18n = {
   // Dashboard
   error_reloading_subscription: "Błąd przeładowania subskrypcji:",
   error_fetching_image_results: "Błąd pobierania wyników obrazu:",

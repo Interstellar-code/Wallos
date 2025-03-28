@@ -57,16 +57,16 @@ function runDatabaseMigration() {
   fetch(url)
     .then(response => {
       if (!response.ok) {
-        throw new Error(translate('network_response_error'));
+        throw new Error('Network response was not ok');
       }
     });
 }
 
 function showErrorMessage(message) {
   const toast = document.querySelector(".toast#errorToast");
-  (closeIcon = document.querySelector(".close-error")),
-    (errorMessage = document.querySelector(".errorMessage")),
-    (progress = document.querySelector(".progress.error"));
+  const closeIcon = document.querySelector(".close-error");
+  const errorMessage = document.querySelector(".errorMessage");
+  const progress = document.querySelector(".progress.error");
   let timer1, timer2;
   errorMessage.textContent = message;
   toast.classList.add("active");
@@ -95,9 +95,9 @@ function showErrorMessage(message) {
 
 function showSuccessMessage(message) {
   const toast = document.querySelector(".toast#successToast");
-  (closeIcon = document.querySelector(".close-success")),
-    (successMessage = document.querySelector(".successMessage")),
-    (progress = document.querySelector(".progress.success"));
+  const closeIcon = document.querySelector(".close-success");
+  const successMessage = document.querySelector(".successMessage");
+  const progress = document.querySelector(".progress.success");
   let timer1, timer2;
   successMessage.textContent = message;
   toast.classList.add("active");
@@ -152,10 +152,10 @@ function restoreDB() {
         fetch('endpoints/db/migrate.php')
           .then(response => response.text())
           .then(() => {
-            window.location.href = 'logout.php';
+            document.getElementById('logout-form').submit();
           })
           .catch(error => {
-            window.location.href = 'logout.php';
+            document.getElementById('logout-form').submit();
           });
       } else {
         showErrorMessage(data.message);

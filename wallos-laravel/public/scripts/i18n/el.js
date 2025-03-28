@@ -1,4 +1,4 @@
-let i18n = {
+var i18n = {
   // Dashboard
   error_reloading_subscription: "Σφάλμα επαναφόρτωσης συνδρομής:",
   error_fetching_image_results: "Σφάλμα λήψης αποτελεσμάτων εικόνας:",

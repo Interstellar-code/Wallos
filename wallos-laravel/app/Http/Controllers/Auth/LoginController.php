@@ -11,7 +11,7 @@ use Illuminate\Http\RedirectResponse;
     {
         use AuthenticatesUsers;
 
-        protected $redirectTo = '/';
+        protected $redirectTo = '/home';
 
         // Constructor removed as middleware is handled via routes or bootstrap/app.php
 
@@ -42,5 +42,22 @@ use Illuminate\Http\RedirectResponse;
                 $this->username() => 'required|string',
                 'password' => 'required|string',
             ]);
+        }
+        
+        /**
+         * Log the user out of the application.
+         *
+         * @param  \Illuminate\Http\Request  $request
+         * @return \Illuminate\Http\RedirectResponse
+         */
+        public function logout(Request $request)
+        {
+            $this->guard()->logout();
+
+            $request->session()->invalidate();
+
+            $request->session()->regenerateToken();
+
+            return redirect()->route('auth.login');
         }
     }

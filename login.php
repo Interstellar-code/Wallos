@@ -261,8 +261,13 @@ if ($adminRow['smtp_address'] != "" && $adminRow['server_url'] != "") {
     <script type="text/javascript">
         window.update_theme_settings = "<?= $updateThemeSettings ?>";
         window.color_theme = "<?= $colorTheme ?>";
+        window.translations = <?= json_encode($i18n) ?>;
     </script>
+    <script type="text/javascript" src="scripts/i18n.js?<?= $version ?>"></script>
     <script type="text/javascript" src="scripts/login.js?<?= $version ?>"></script>
+    <script type="text/javascript">
+        I18n.init(window.translations);
+    </script>
 </head>
 
 <body class="<?= $languages[$lang]['dir'] ?>">

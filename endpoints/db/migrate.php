@@ -6,15 +6,23 @@ function errorHandler($severity, $message, $file, $line)
 
 // Set the custom error handler
 set_error_handler('errorHandler');
-/** @var \SQLite3 $db */
+
 try {
-    require_once 'includes/connect_endpoint_crontabs.php';
-} catch (Exception $e) {
-    require_once '../../includes/connect_endpoint.php';
-} finally {
-    // Restore the default error handler
-    restore_error_handler();
-}
+    // Try primary connection path
+    if (file_exists('includes/connect_endpoint_crontabs.php')) {
+        require_once 'includes/connect_endpoint_crontabs.php';
+    }
+    // Fallback to secondary path
+    elseif (file_exists('../../includes/connect_endpoint.php')) {
+        require_once '../../includes/connect_endpoint.php';
+    } else {
+        throw new Exception('Could not locate database connection file');
+    }
+
+    // Verify database is writable
+    if (!is_writable($db->filename)) {
+        throw new Exception('Database file is not writable: ' . $db->filename);
+    }
 
 
 $completedMigrations = [];

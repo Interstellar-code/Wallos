@@ -22,11 +22,11 @@
 - [x] Update session handling
 
 ## Task 5: Database Access
-- [ ] Convert direct DB calls to Eloquent
-- [ ] Implement models
-- [ ] Set up relationships
+- [x] Convert direct DB calls to Eloquent
+- [x] Implement models
+- [x] Set up relationships
 
 ## Task 6: Final Testing
-- [ ] Cross-browser testing
-- [ ] Performance testing
-- [ ] Security audit
+- [x] Cross-browser testing
+- [x] Performance testing
+- [x] Security audit

@@ -1,4 +1,4 @@
-let i18n = {
+var i18n = {
   // Dashboard
   error_reloading_subscription: "Chyba při načítání předplatného:",
   error_fetching_image_results: "Chyba při načítání výsledků obrázků:",

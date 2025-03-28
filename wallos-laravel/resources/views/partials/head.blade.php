@@ -8,6 +8,11 @@
 <link rel="apple-touch-icon" sizes="152x152" href="{{ asset('images/icon/apple-touch-icon-152.png') }}">
 <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('images/icon/apple-touch-icon-180.png') }}">
 <link rel="manifest" href="{{ asset('manifest.json') }}">
+
+<!-- Styles -->
+@vite(['resources/css/app.css', 'resources/js/app.js'])
+
+<!-- Theme CSS -->
 <link rel="stylesheet" href="{{ asset('styles/theme.css') }}">
 <link rel="stylesheet" href="{{ asset('styles/login.css') }}">
 <link rel="stylesheet" href="{{ asset('styles/themes/red.css') }}" id="red-theme" {{ !isset($colorTheme) || $colorTheme != 'red' ? 'disabled' : '' }}>
@@ -17,3 +22,6 @@
 <link rel="stylesheet" href="{{ asset('styles/login-dark-theme.css') }}" id="dark-theme" {{ !isset($theme) || $theme == 'light' ? 'disabled' : '' }}>
 <link rel="stylesheet" href="{{ asset('styles/font-awesome.min.css') }}">
 <link rel="stylesheet" href="{{ asset('styles/barlow.css') }}">
+
+<!-- CSRF Token -->
+<meta name="csrf-token" content="{{ csrf_token() }}">

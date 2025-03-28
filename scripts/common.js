@@ -1,152 +1,79 @@
-let isDropdownOpen = false;
+// Common JavaScript functions for WallOS
+document.addEventListener('DOMContentLoaded', function() {
+  let isDropdownOpen = false;
 
-function toggleDropdown() {
-  const dropdown = document.querySelector('.dropdown');
-  dropdown.classList.toggle('is-open');
-  isDropdownOpen = !isDropdownOpen;
-}
-
-function showErrorMessage(message) {
-  const toast = document.querySelector(".toast#errorToast");
-  const closeIcon = document.querySelector(".close-error");
-  const errorMessage = document.querySelector(".errorMessage");
-  const progress = document.querySelector(".progress.error");
-  let timer1, timer2;
-  errorMessage.textContent = message;
-  toast.classList.add("active");
-  progress.classList.add("active");
-  timer1 = setTimeout(() => {
-    toast.classList.remove("active");
-    closeIcon.removeEventListener("click", () => { });
-  }, 5000);
-
-  timer2 = setTimeout(() => {
-    progress.classList.remove("active");
-  }, 5300);
-
-  closeIcon.addEventListener("click", () => {
-    toast.classList.remove("active");
-
-    setTimeout(() => {
-      progress.classList.remove("active");
-    }, 300);
-
-    clearTimeout(timer1);
-    clearTimeout(timer2);
-    closeIcon.removeEventListener("click", () => { });
-  });
-}
-
-function showSuccessMessage(message) {
-  const toast = document.querySelector(".toast#successToast");
-  const closeIcon = document.querySelector(".close-success");
-  const successMessage = document.querySelector(".successMessage");
-  const progress = document.querySelector(".progress.success");
-  let timer1, timer2;
-  successMessage.textContent = message;
-  toast.classList.add("active");
-  progress.classList.add("active");
-  timer1 = setTimeout(() => {
-    toast.classList.remove("active");
-    closeIcon.removeEventListener("click", () => { });
-  }, 5000);
-
-  timer2 = setTimeout(() => {
-    progress.classList.remove("active");
-  }, 5300);
-
-  closeIcon.addEventListener("click", () => {
-    toast.classList.remove("active");
-
-    setTimeout(() => {
-      progress.classList.remove("active");
-    }, 300);
-
-    clearTimeout(timer1);
-    clearTimeout(timer2);
-    closeIcon.removeEventListener("click", () => { });
-  });
-}
-
-document.addEventListener('DOMContentLoaded', function () {
-
-  const userLocale = navigator.language || navigator.languages[0];
-  document.cookie = `user_locale=${userLocale}; expires=Fri, 31 Dec 9999 23:59:59 GMT; SameSite=Strict`;
-
-  if (window.update_theme_settings) {
-    const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const themePreference = prefersDarkMode ? 'dark' : 'light';
-    const darkThemeCss = document.querySelector("#dark-theme");
-    darkThemeCss.disabled = themePreference === 'light';
-
-    // Preserve existing classes on the body tag
-    const existingClasses = document.body.className.split(' ').filter(cls => cls !== 'dark' && cls !== 'light');
-    document.body.className = [...existingClasses, themePreference].join(' ');
-
-    document.cookie = `inUseTheme=${themePreference}; expires=Fri, 31 Dec 9999 23:59:59 GMT; SameSite=Strict`;
-    const themeColorMetaTag = document.querySelector('meta[name="theme-color"]');
-    themeColorMetaTag.setAttribute('content', themePreference === 'dark' ? '#222222' : '#FFFFFF');
-  }
-
-  document.addEventListener('mousedown', function (event) {
-    var dropdown = document.querySelector('.dropdown');
-    var dropdownContent = document.querySelector('.dropdown-content');
-
-    if (dropdown && !dropdown.contains(event.target) && isDropdownOpen) {
-      dropdown.classList.remove('is-open');
-      isDropdownOpen = false;
-    }
-  });
-
-  // Safely handle dropdown event listener with multiple fallbacks
-  function initDropdownListener() {
-    // Try multiple selector variations
-    const dropdown = document.querySelector('.dropdown-content') ||
-                    document.querySelector('.dropdown .content') ||
-                    document.querySelector('[data-dropdown-content]');
+  // Initialize dropdown functionality
+  function initDropdowns() {
+    const dropdowns = document.querySelectorAll('.dropdown');
     
-    if (!dropdown) {
-      console.warn('Dropdown element not found - disabling dropdown functionality');
-      return;
-    }
+    dropdowns.forEach(dropdown => {
+      const toggle = dropdown.querySelector('.dropdown-toggle');
+      const content = dropdown.querySelector('.dropdown-content');
+      
+      if (!toggle || !content) return;
+      
+      toggle.addEventListener('click', function(e) {
+        e.preventDefault();
+        isDropdownOpen = !dropdown.classList.contains('is-open');
+        dropdown.classList.toggle('is-open', isDropdownOpen);
+      });
+    });
 
-    // Verify element is in DOM
-    if (!document.body.contains(dropdown)) {
-      console.warn('Dropdown element exists but not in DOM');
-      return;
-    }
-
-    // Use event delegation as fallback
-    document.body.addEventListener('focus', function(e) {
-      if (e.target.closest('.dropdown-content, .dropdown .content, [data-dropdown-content]')) {
-        isDropdownOpen = true;
-      }
-    }, true);
+    // Close dropdown when clicking outside
+    document.addEventListener('mousedown', function(event) {
+      dropdowns.forEach(dropdown => {
+        if (dropdown && !dropdown.contains(event.target)) {
+          dropdown.classList.remove('is-open');
+          isDropdownOpen = false;
+        }
+      });
+    });
   }
 
-  // Initialize when DOM is fully ready and elements exist
-  function safeInit() {
-    if (document.querySelector('.dropdown-content')) {
-      initDropdownListener();
-    } else {
-      setTimeout(safeInit, 100);
-    }
+  // Initialize all common functionality
+  function init() {
+    initDropdowns();
+    // Other common initializations...
   }
 
-  if (document.readyState === 'complete') {
-    safeInit();
-  } else {
-    window.addEventListener('load', safeInit);
-  }
+  init();
 });
 
-function getCookie(name) {
-  const cookies = document.cookie.split(';');
-  for (let cookie of cookies) {
-    cookie = cookie.trim();
-    if (cookie.startsWith(`${name}=`)) {
-      return cookie.substring(name.length + 1);
-    }
-  }
-  return null;
+// Existing utility functions
+function debounce(func, wait) {
+  let timeout;
+  return function() {
+    const context = this;
+    const args = arguments;
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func.apply(context, args), wait);
+  };
 }
+
+function throttle(func, limit) {
+  let inThrottle;
+  return function() {
+    const args = arguments;
+    const context = this;
+    if (!inThrottle) {
+      func.apply(context, args);
+      inThrottle = true;
+      setTimeout(() => inThrottle = false, limit);
+    }
+  };
+}
+
+// Theme switching functionality
+function initThemeSwitcher() {
+  const themeSwitcher = document.getElementById('theme-switcher');
+  if (themeSwitcher) {
+    themeSwitcher.addEventListener('change', function(e) {
+      document.documentElement.setAttribute('data-theme', e.target.value);
+      localStorage.setItem('theme', e.target.value);
+    });
+  }
+}
+
+// Initialize theme on load
+const currentTheme = localStorage.getItem('theme') || 'light';
+document.documentElement.setAttribute('data-theme', currentTheme);
