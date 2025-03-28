@@ -12,9 +12,9 @@ class Household extends Model
     protected $table = 'household';
 
     protected $fillable = [
+        'user_id',
         'name',
-        'email',
-        'user_id'
+        'email'
     ];
 
     public function user()
@@ -22,8 +22,13 @@ class Household extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function paymentMethods()
+    public function subscriptions()
     {
-        return $this->hasMany(PaymentMethod::class);
+        return $this->hasMany(Subscription::class, 'payer_user_id');
+    }
+
+    public function users()
+    {
+        return $this->hasMany(User::class);
     }
 }

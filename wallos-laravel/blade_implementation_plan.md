@@ -17,9 +17,9 @@
 - [x] Add CSRF protection
 
 ## Task 4: Authentication
-- [ ] Convert login system
-- [ ] Implement Laravel auth
-- [ ] Update session handling
+- [x] Convert login system
+- [x] Implement Laravel auth
+- [x] Update session handling
 
 ## Task 5: Database Access
 - [ ] Convert direct DB calls to Eloquent

@@ -5,26 +5,26 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class PaymentMethod extends Model
+class Settings extends Model
 {
     use HasFactory;
 
-    protected $table = 'payment_methods';
+    protected $table = 'settings';
 
     protected $fillable = [
         'user_id',
-        'name',
-        'description',
-        'enabled'
+        'dark_theme',
+        'compact_mode',
+        'language',
+        'timezone',
+        'date_format',
+        'time_format',
+        'currency_format',
+        'first_day_of_week'
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class);
-    }
-
-    public function subscriptions()
-    {
-        return $this->hasMany(Subscription::class);
     }
 }

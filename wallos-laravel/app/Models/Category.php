@@ -4,33 +4,36 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Models\Household;
 
 class Category extends Model
 {
     use HasFactory;
 
+    protected $table = 'categories';
+
     protected $fillable = [
-        'name',
-        'color',
         'user_id',
-        'household_id',
+        'household_id' => null,
+        'name',
+        'description',
+        'color',
+        'icon',
         'enabled'
     ];
 
-    public function user(): BelongsTo
+    public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    public function household(): BelongsTo
-    {
-        return $this->belongsTo(Household::class);
-    }
-
-    public function subscriptions(): HasMany
+    public function subscriptions()
     {
         return $this->hasMany(Subscription::class);
+    }
+
+    public function household()
+    {
+        return $this->belongsTo(Household::class);
     }
 }

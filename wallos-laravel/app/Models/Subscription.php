@@ -4,50 +4,53 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Subscription extends Model
 {
     use HasFactory;
 
+    protected $table = 'subscriptions';
+
     protected $fillable = [
+        'user_id',
         'name',
+        'description',
         'amount',
-        'currency',
-        'frequency',
-        'next_payment_date',
-        'last_payment_date',
-        'notes',
-        'active',
+        'currency_id',
         'category_id',
         'payment_method_id',
-        'household_id',
-        'user_id'
+        'payer_user_id',
+        'billing_cycle',
+        'next_payment',
+        'last_payment',
+        'inactive',
+        'website',
+        'logo',
+        'notes'
     ];
 
-    protected $casts = [
-        'next_payment_date' => 'date',
-        'last_payment_date' => 'date',
-        'active' => 'boolean'
-    ];
-
-    public function household(): BelongsTo
-    {
-        return $this->belongsTo(Household::class);
-    }
-
-    public function user(): BelongsTo
+    public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    public function category(): BelongsTo
+    public function currency()
+    {
+        return $this->belongsTo(Currency::class);
+    }
+
+    public function category()
     {
         return $this->belongsTo(Category::class);
     }
 
-    public function paymentMethod(): BelongsTo
+    public function paymentMethod()
     {
         return $this->belongsTo(PaymentMethod::class);
+    }
+
+    public function payer()
+    {
+        return $this->belongsTo(Household::class, 'payer_user_id');
     }
 }

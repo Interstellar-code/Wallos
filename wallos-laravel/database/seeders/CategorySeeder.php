@@ -3,29 +3,41 @@
 namespace Database\Seeders;
 
 use App\Models\Category;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class CategorySeeder extends Seeder
 {
-    public function run(): void
+    public function run()
     {
-        $categories = [
-            ['name' => 'Streaming', 'icon' => 'fa-tv'],
-            ['name' => 'Software', 'icon' => 'fa-laptop'],
-            ['name' => 'Utilities', 'icon' => 'fa-bolt'],
-            ['name' => 'Mobile', 'icon' => 'fa-mobile'],
-            ['name' => 'Gaming', 'icon' => 'fa-gamepad'],
-            ['name' => 'Education', 'icon' => 'fa-graduation-cap'],
-        ];
+        // Get first user as admin
+        $admin = User::first();
 
-        foreach ($categories as $category) {
-            Category::create([
-                'name' => $category['name'],
-                'icon' => $category['icon'],
-                'user_id' => 1,
-                'household_id' => 1,
-                'enabled' => true
-            ]);
-        }
+        // Create default categories for admin
+        Category::factory()->createMany([
+            [
+                'user_id' => $admin->id,
+                'household_id' => null,
+                'name' => 'Utilities',
+                'color' => '#FF5733'
+            ],
+            [
+                'user_id' => $admin->id,
+                'name' => 'Entertainment',
+                'color' => '#33FF57'
+            ],
+            [
+                'user_id' => $admin->id,
+                'name' => 'Food',
+                'color' => '#3357FF'
+            ]
+        ]);
+
+        // Create categories for all users
+        User::all()->each(function ($user) {
+            Category::factory()
+                ->count(3)
+                ->create(['user_id' => $user->id]);
+        });
     }
 }

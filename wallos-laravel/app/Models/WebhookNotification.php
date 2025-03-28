@@ -5,26 +5,24 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class PaymentMethod extends Model
+class WebhookNotification extends Model
 {
     use HasFactory;
 
-    protected $table = 'payment_methods';
+    protected $table = 'webhook_notifications';
 
     protected $fillable = [
         'user_id',
-        'name',
-        'description',
-        'enabled'
+        'enabled',
+        'webhook_url',
+        'auth_type',
+        'auth_token',
+        'custom_headers',
+        'content_type'
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class);
-    }
-
-    public function subscriptions()
-    {
-        return $this->hasMany(Subscription::class);
     }
 }

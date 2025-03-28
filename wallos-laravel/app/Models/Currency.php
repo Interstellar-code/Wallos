@@ -5,16 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class PaymentMethod extends Model
+class Currency extends Model
 {
     use HasFactory;
 
-    protected $table = 'payment_methods';
+    protected $table = 'currencies';
 
     protected $fillable = [
         'user_id',
         'name',
-        'description',
+        'code',
+        'symbol',
+        'rate',
+        'is_primary',
         'enabled'
     ];
 

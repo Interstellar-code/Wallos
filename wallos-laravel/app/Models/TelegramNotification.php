@@ -5,26 +5,22 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class PaymentMethod extends Model
+class TelegramNotification extends Model
 {
     use HasFactory;
 
-    protected $table = 'payment_methods';
+    protected $table = 'telegram_notifications';
 
     protected $fillable = [
         'user_id',
-        'name',
-        'description',
-        'enabled'
+        'enabled',
+        'bot_token',
+        'chat_id',
+        'parse_mode'
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class);
-    }
-
-    public function subscriptions()
-    {
-        return $this->hasMany(Subscription::class);
     }
 }

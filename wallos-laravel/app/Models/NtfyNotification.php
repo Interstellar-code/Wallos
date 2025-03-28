@@ -5,26 +5,23 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class PaymentMethod extends Model
+class NtfyNotification extends Model
 {
     use HasFactory;
 
-    protected $table = 'payment_methods';
+    protected $table = 'ntfy_notifications';
 
     protected $fillable = [
         'user_id',
-        'name',
-        'description',
-        'enabled'
+        'enabled',
+        'server_url',
+        'topic',
+        'priority',
+        'auth_token'
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class);
-    }
-
-    public function subscriptions()
-    {
-        return $this->hasMany(Subscription::class);
     }
 }

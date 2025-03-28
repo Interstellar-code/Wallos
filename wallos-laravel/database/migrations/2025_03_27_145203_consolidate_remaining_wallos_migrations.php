@@ -40,7 +40,16 @@ return new class extends Migration
         // From 000014.php - Add color theme and custom colors
         if (!Schema::hasTable('settings')) {
             Schema::create('settings', function (Blueprint $table) {
+                $table->foreignId('user_id')->constrained();
+                $table->string('language')->default('en');
+                $table->string('timezone')->default('UTC');
+                $table->string('date_format')->default('Y-m-d');
+                $table->string('time_format')->default('H:i');
+                $table->string('currency_format')->default('symbol');
+                $table->integer('first_day_of_week')->default(1);
+                $table->boolean('dark_mode')->default(false);
                 $table->string('color_theme')->default('blue');
+                $table->timestamps();
             });
         } else {
             Schema::table('settings', function (Blueprint $table) {
@@ -76,7 +85,9 @@ return new class extends Migration
         // From 000016.php - Notification system overhaul
         if (!Schema::hasTable('telegram_notifications')) {
             Schema::create('telegram_notifications', function (Blueprint $table) {
+                $table->foreignId('user_id')->constrained();
                 $table->boolean('enabled')->default(false);
+                $table->timestamps();
                 $table->text('bot_token')->default('');
                 $table->text('chat_id')->default('');
             });
@@ -84,7 +95,9 @@ return new class extends Migration
 
         if (!Schema::hasTable('webhook_notifications')) {
             Schema::create('webhook_notifications', function (Blueprint $table) {
+                $table->foreignId('user_id')->constrained();
                 $table->boolean('enabled')->default(false);
+                $table->timestamps();
                 $table->text('headers')->default('');
                 $table->text('url')->default('');
                 $table->string('request_method')->default('POST');
@@ -96,7 +109,9 @@ return new class extends Migration
 
         if (!Schema::hasTable('gotify_notifications')) {
             Schema::create('gotify_notifications', function (Blueprint $table) {
+                $table->foreignId('user_id')->constrained();
                 $table->boolean('enabled')->default(false);
+                $table->timestamps();
                 $table->text('url')->default('');
                 $table->text('token')->default('');
                 $table->boolean('ignore_ssl')->default(false);
@@ -105,7 +120,10 @@ return new class extends Migration
 
         if (!Schema::hasTable('email_notifications')) {
             Schema::create('email_notifications', function (Blueprint $table) {
+                $table->foreignId('user_id')->constrained();
                 $table->boolean('enabled')->default(false);
+                $table->string('email_address');
+                $table->timestamps();
                 $table->text('smtp_address')->default('');
                 $table->integer('smtp_port')->default(587);
                 $table->text('smtp_username')->default('');
@@ -118,25 +136,50 @@ return new class extends Migration
 
         if (!Schema::hasTable('notification_settings')) {
             Schema::create('notification_settings', function (Blueprint $table) {
-                $table->integer('days')->default(0);
+                $table->foreignId('user_id')->constrained();
+                $table->integer('notify_before')->default(3);
+                $table->string('notify_before_unit')->default('days');
+                $table->boolean('notify_on_day')->default(true);
+                $table->integer('notify_after')->default(1);
+                $table->string('notify_after_unit')->default('days');
+                $table->boolean('notify_on_failure')->default(true);
+                $table->boolean('notify_on_new_device')->default(true);
+                $table->boolean('notify_on_password_change')->default(true);
+                $table->timestamps();
             });
         }
 
         // From 000017.php - Additional notification methods
         if (!Schema::hasTable('pushover_notifications')) {
             Schema::create('pushover_notifications', function (Blueprint $table) {
+                $table->foreignId('user_id')->constrained();
                 $table->boolean('enabled')->default(false);
-                $table->text('user_key')->default('');
-                $table->text('token')->default('');
+                $table->string('webhook_url');
+                $table->string('bot_name');
+                $table->string('bot_avatar')->nullable();
+                $table->timestamps();
             });
         }
 
         if (!Schema::hasTable('discord_notifications')) {
             Schema::create('discord_notifications', function (Blueprint $table) {
+                $table->foreignId('user_id')->constrained();
                 $table->boolean('enabled')->default(false);
-                $table->text('webhook_url')->default('');
-                $table->text('bot_username')->default('');
-                $table->text('bot_avatar_url')->default('');
+                $table->string('webhook_url');
+                $table->string('bot_name');
+                $table->string('bot_avatar')->nullable();
+                $table->timestamps();
+            });
+        }
+
+        if (!Schema::hasTable('gotify_notifications')) {
+            Schema::create('gotify_notifications', function (Blueprint $table) {
+                $table->foreignId('user_id')->constrained();
+                $table->boolean('enabled')->default(false);
+                $table->string('server_url');
+                $table->string('app_token');
+                $table->integer('priority')->default(5);
+                $table->timestamps();
             });
         }
 
@@ -326,7 +369,9 @@ return new class extends Migration
         // From 000021.php - Add ntfy notifications
         if (!Schema::hasTable('ntfy_notifications')) {
             Schema::create('ntfy_notifications', function (Blueprint $table) {
+                $table->foreignId('user_id')->constrained();
                 $table->boolean('enabled')->default(false);
+                $table->timestamps();
                 $table->text('host')->default('');
                 $table->text('topic')->default('');
                 $table->text('headers')->default('');
